@@ -65,6 +65,31 @@ class Airport:
        self.in_traffic.add("lol")
        print(self.in_traffic.peek())
 
+    # Disse to metodene er egentlig helt like. Refaktorer.
+    def generate_new_planes_for_landing(self):
+       amount = random.randint(0,9)
+       for planes in xrange(amount):
+           plane = Plane("Plane {}".format(planes))
+           if len(self.in_traffic) < 11:
+               self.in_traffic.add(plane)
+           else:
+               print("Køen er full, prøv en annen flyplass")
+               self.total_planes_rejected = self.total_planes_rejected + 1
+           self.total_planes_handled = self.total_planes_handled + 1
+           
+    def generate_new_planes_to_take_off(self):
+        amount = random.randint(0,9)
+        for planes in xrange(amount):
+            plane = Plane("Plane {}".format(planes))
+            if len(self.on_ground) < 11:
+                self.on_ground.add(plane)
+            else:
+                print("Køen på bakken er full. Du må vente")
+                self.total_planes_rejected = self.total_planes_rejected + 1
+            self.total_planes_handled = self.total_planes_handled + 1
+
+   
+
 
 
 a = Airport(0.6)
