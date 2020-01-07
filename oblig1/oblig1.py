@@ -34,17 +34,35 @@ class Plane:
        self.name = name
 
 
-def get_poisson_random(mean):
-   r = random
-   L = math.exp(-mean)
-   k = 0
-   p = 1.0
-   while p > L:
-       p = p * r.random()
-       k = k + 1
-   return k - 1
+class Airport:
+
+    def __init__(self, mean, t=10):
+       self.mean = self.get_poisson_random(mean)
+       self.t = t
 
 
+    def get_poisson_random(self, mean):
+       r = random
+       L = math.exp(-mean)
+       k = 0
+       p = 1.0
+       while p > L:
+           p = p * r.random()
+           k = k + 1
+       return k - 1
+
+    def initialize(self):
+       self.in_traffic = Queue()
+       self.on_ground = Queue()
+       self.in_traffic.add("lol")
+       print(self.in_traffic.peek())
+
+
+
+a = Airport(0.6)
+a.initialize()
+
+"""
 in_traffic = Queue()
 on_ground = Queue()
 
@@ -59,3 +77,4 @@ def main():
    print(meanz)
 
 main()
+"""
