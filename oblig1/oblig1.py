@@ -39,6 +39,12 @@ class Airport:
     def __init__(self, mean, t=10):
        self.mean = self.get_poisson_random(mean)
        self.t = t
+       self.total_planes_handled = 0
+       self.total_planes_rejected = 0
+       self.total_planes_accepted = 0
+       self.total_planes_take_off = 0
+       self.total_planes_landed = 0
+
 
 
     def get_poisson_random(self, mean):
