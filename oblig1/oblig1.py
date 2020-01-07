@@ -36,6 +36,7 @@ class Plane:
 
 class Airport:
 
+    # Konstruktør med default tidsenheter
     def __init__(self, mean, t=10):
        self.mean = self.get_poisson_random(mean)
        self.t = t
@@ -57,6 +58,7 @@ class Airport:
            k = k + 1
        return k - 1
 
+
     def initialize(self):
        self.in_traffic = Queue()
        self.on_ground = Queue()
@@ -68,19 +70,4 @@ class Airport:
 a = Airport(0.6)
 a.initialize()
 
-"""
-in_traffic = Queue()
-on_ground = Queue()
 
-print(q.peek())
-q.remove()
-print(q.peek())
-
-def main():
-   t = input("Hvor mange tidssteg?")
-   meanz = float(input("Frekvens?"))
-   meanz = get_poisson_random(meanz)
-   print(meanz)
-
-main()
-"""
