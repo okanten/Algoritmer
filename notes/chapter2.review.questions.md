@@ -22,6 +22,8 @@ The asymptotic complexity of an algorithm is a way to describe which component/f
 |t(n) = 8n<sup>3</sup> + 3n<sup>2</sup> 	|O(n<sup>3</sup> 	| cubic		|
 |t(n) = 2<sup>n</sup> + 18n<sup>2</sup> + 3n 	|O(2<sup>n</sup> 	| exponential	|
 
+---
+
 ## SR 2.3 How do you define the order of an algorithm? How do you find the order of an algorithm?
 
 
