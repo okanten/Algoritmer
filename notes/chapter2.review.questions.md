@@ -10,6 +10,8 @@ A growth function is the relationship between the problem size and the value we 
 
 > A growth function shows the time or space utilization relative to the problem size. The growth function of an algorithm represents the time complexity of the algorithm.
 
+---
+
 ## SR 2.2 What is the asymptotic complexity of an algorithm?
 
 The asymptotic complexity of an algorithm is a way to describe which component/factor that causes the growth in a function. It might be constant (n), logarithmic (log n), exponent(^n) etc.
@@ -46,6 +48,8 @@ t(n) = 2<sup>n</sup> + 18n<sup>2</sup> + 3n = O(2<sup>n</sup>)
 
 > The order of an algorithm is nothing but the asymptotic complexity of the algorithm. It gives the upper bound to the algorithm's growth function. The order of an algorithm is found by eliminating constants and all but the dominant term in the algorithm's growth function.
 
+---
+
 ## SR 2.4 What would be the time complexity of a loop with a logarithmic progression
 
 n + log n
@@ -58,6 +62,8 @@ Not sure if we calculate with the constant in a loop (n), but it would be O(1) +
 
 > If the progression of the loop is logarithmic, then its time complexity would be O(log n)
 
+---
+
 ## SR 2.5 What would be the time complexity of a loop body that calls a method with a quadratic time complexity?
 
 The time complexity of a loop with a body that calls a method with a quadratic time complexity would be:
@@ -68,4 +74,4 @@ O(n) * O(n<sup>2</sup>) = O(n<sup>3</sup>)
 
 > Here the loop structure steps through n items in a linear fashion and the body of the loop is O(n<sup>2</sup>). Therefore, the time complexity of the entire loop is O(n<sup>3</sup>)
 
-
+---
