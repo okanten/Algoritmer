@@ -41,6 +41,4 @@ Efficient software is designed in a way that uses less resources and clever desi
 
 Equally important, is the user interface. The user must be able to be efficient in the software, and it has to be designed in with the users skills in mind. A web interface for email in an office setting should be designed to be accessible/usable by anyone, but an editor (such as Vim) can be designed with a learning curve for the users benefit.
 
-# Exercises
 
-## 
