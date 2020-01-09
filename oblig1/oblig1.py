@@ -1,4 +1,3 @@
-
 import random
 import math
 
@@ -28,70 +27,102 @@ class Queue:
     def size(self):
         return len(self.list.size)
 
+    # Overrider len() metoden til Python slik at vi kan også kan bruke den (i tillegg til size) metoden for vår egen klasse.
+    def __len__(self):
+        return len(self.list)
+
+    # Overrider metoden som blir brukt i loops. Nå kan vi loope over lista til klassen.
+    def __iter__(self):
+        return iter(self.list)
+
 class Plane:
 
-    def __init(self, name):
-       self.name = name
+    # Konstruktør med default på navn. Genererer "random" navn om den er tom.
+    def __init__(self, name=None):
+        self.plane_types = ["Boeing 747", "Boeing 737 MAX", "Antonov An-2", "Solar Impulse 1"]
+        if name is None:
+            plane_type = random.randint(0,3)
+            pseudo_identifier = random.randint(0, 100)            
+            name = '{} - {}'.format(self.plane_types[plane_type], pseudo_identifier) 
+        self.name = name
 
+    @staticmethod 
+    def generate_random_identifiers():
+        letters = ''
+
+    def __str__(self):
+        return self.name
 
 class Airport:
 
     # Konstruktør med default tidsenheter
     def __init__(self, mean, t=10):
-       self.mean = self.get_poisson_random(mean)
-       self.t = t
-       self.total_planes_handled = 0
-       self.total_planes_rejected = 0
-       self.total_planes_accepted = 0
-       self.total_planes_take_off = 0
-       self.total_planes_landed = 0
-
-
+        self.mean = self.get_poisson_random(mean)
+        self.t = t
+        self.total_planes_handled = 0
+        self.total_planes_rejected = 0
+        self.total_planes_accepted = 0
+        self.total_planes_take_off = 0
+        self.total_planes_landed = 0
 
     def get_poisson_random(self, mean):
-       r = random
-       L = math.exp(-mean)
-       k = 0
-       p = 1.0
-       while p > L:
-           p = p * r.random()
-           k = k + 1
-       return k - 1
-
+        r = random
+        L = math.exp(-mean)
+        k = 0
+        p = 1.0
+        while p > L:
+            p = p * r.random()
+            k = k + 1
+        return k - 1
 
     def initialize(self):
-       self.in_traffic = Queue()
-       self.on_ground = Queue()
-       self.in_traffic.add("lol")
-       print(self.in_traffic.peek())
+        self.in_traffic = Queue()
+        self.on_ground = Queue()
+        # Genererer 10 fly i hver kø.
+       # self.generate_new_planes(self.in_traffic)
+       # self.generate_new_planes(self.on_ground)
+       # for plane in self.on_ground:
+            #print(plane)
+        self.time_step()
+        
 
-    # Disse to metodene er egentlig helt like. Refaktorer.
-    def generate_new_planes_for_landing(self):
-       amount = random.randint(0,9)
-       for planes in xrange(amount):
-           plane = Plane("Plane {}".format(planes))
-           if len(self.in_traffic) < 11:
-               self.in_traffic.add(plane)
-           else:
-               print("Køen er full, prøv en annen flyplass")
-               self.total_planes_rejected = self.total_planes_rejected + 1
-           self.total_planes_handled = self.total_planes_handled + 1
-           
-    def generate_new_planes_to_take_off(self):
+    def time_step(self):
+        for step in range(self.t):
+            self.generate_new_planes(self.in_traffic)
+            self.generate_new_planes(self.on_ground)
+            if self.in_traffic.peek():
+                self.in_traffic = self.handle_plane(self.in_traffic, 'landing', 'landet')
+                self.total_planes_landed += 1
+            elif self.on_ground.peek():
+                self.on_ground = self.handle_plane(self.in_traffic, 'avgang', 'tok av')
+                self.total_planes_take_off += 1
+                
+    # queue er køen som blir brukt. Pre er før handling, post er etter.
+    # Eks: pre = landing, post = landet
+    # Fly 1 klar for _landing_
+    # Fly 1 _landet_
+    def handle_plane(self, queue, pre, post) -> Queue: 
+        if queue.peek():
+            plane = queue.peek()
+            print("Fly {} klar for {}".format(plane, pre))
+            queue.remove()
+            print("Fly {} {}".format(plane, post))
+        return queue
+
+    def generate_new_planes(self, queue):
         amount = random.randint(0,9)
-        for planes in xrange(amount):
-            plane = Plane("Plane {}".format(planes))
-            if len(self.on_ground) < 11:
-                self.on_ground.add(plane)
+        for planes in range(amount):
+            plane = Plane()
+            if len(queue) < 11:
+                queue.add(plane)
             else:
-                print("Køen på bakken er full. Du må vente")
-                self.total_planes_rejected = self.total_planes_rejected + 1
-            self.total_planes_handled = self.total_planes_handled + 1
-
-   
+                print("Køen er full")
+                self.total_planes_rejected += 1
+            self.total_planes_handled += 1
 
 
 
+p = Plane("hei")
 a = Airport(0.6)
 a.initialize()
 
