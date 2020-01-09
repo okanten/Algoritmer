@@ -43,7 +43,7 @@ class Plane:
         if name is None:
             plane_type = random.randint(0,3)
             pseudo_identifier = random.randint(0, 100)            
-            name = '{} - {}'.format(self.plane_types[plane_type], pseudo_identifier) 
+            name = '{} [{}]'.format(self.plane_types[plane_type], pseudo_identifier) 
         self.name = name
 
     @staticmethod 
@@ -57,13 +57,14 @@ class Airport:
 
     # Konstruktør med default tidsenheter
     def __init__(self, mean, t=10):
-        self.mean = self.get_poisson_random(mean)
+        self.mean = mean 
         self.t = t
         self.total_planes_handled = 0
         self.total_planes_rejected = 0
         self.total_planes_accepted = 0
         self.total_planes_take_off = 0
         self.total_planes_landed = 0
+        print(self.mean)
 
     def get_poisson_random(self, mean):
         r = random
@@ -90,11 +91,14 @@ class Airport:
         for step in range(self.t):
             self.generate_new_planes(self.in_traffic)
             self.generate_new_planes(self.on_ground)
+            print(len(self.on_ground))
+            print("####")
+            print(len(self.in_traffic))
             if self.in_traffic.peek():
                 self.in_traffic = self.handle_plane(self.in_traffic, 'landing', 'landet')
                 self.total_planes_landed += 1
             elif self.on_ground.peek():
-                self.on_ground = self.handle_plane(self.in_traffic, 'avgang', 'tok av')
+                self.on_ground = self.handle_plane(self.on_ground, 'avgang', 'tok av')
                 self.total_planes_take_off += 1
                 
     # queue er køen som blir brukt. Pre er før handling, post er etter.
@@ -110,7 +114,8 @@ class Airport:
         return queue
 
     def generate_new_planes(self, queue):
-        amount = random.randint(0,9)
+        amount = self.get_poisson_random(self.mean)
+        print("AMOUNT: " + str(amount))
         for planes in range(amount):
             plane = Plane()
             if len(queue) < 11:
@@ -123,7 +128,7 @@ class Airport:
 
 
 p = Plane("hei")
-a = Airport(0.6)
+a = Airport(0.3, 20)
 a.initialize()
 
 
