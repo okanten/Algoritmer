@@ -27,7 +27,7 @@ class Queue:
     def size(self):
         return len(self.list.size)
 
-    # Overrider len() metoden til Python slik at vi kan også kan bruke den (i tillegg til size) metoden for vår egen klasse.
+    # Overrider len() metoden til Python slik at vi også kan bruke den (i tillegg til size) metoden for vår egen klasse.
     def __len__(self):
         return len(self.list)
 
@@ -79,11 +79,6 @@ class Airport:
     def initialize(self):
         self.in_traffic = Queue()
         self.on_ground = Queue()
-        # Genererer 10 fly i hver kø.
-       # self.generate_new_planes(self.in_traffic)
-       # self.generate_new_planes(self.on_ground)
-       # for plane in self.on_ground:
-            #print(plane)
         self.time_step()
         
 
@@ -91,9 +86,6 @@ class Airport:
         for step in range(self.t):
             self.generate_new_planes(self.in_traffic)
             self.generate_new_planes(self.on_ground)
-            print(len(self.on_ground))
-            print("####")
-            print(len(self.in_traffic))
             if self.in_traffic.peek():
                 self.in_traffic = self.handle_plane(self.in_traffic, 'landing', 'landet')
                 self.total_planes_landed += 1
@@ -127,7 +119,6 @@ class Airport:
 
 
 
-p = Plane("hei")
 a = Airport(0.3, 20)
 a.initialize()
 
