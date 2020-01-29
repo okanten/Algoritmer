@@ -33,3 +33,7 @@ Se illustrasjon i forelesning pdf
 Fakultet er rekursivt
 
 En av de funksjonene som vokser fortest
+
+## Bak kulissene
+
+For maskinen er det akkurat som vanlige funksjonskall. Bruker stacken
