@@ -36,4 +36,7 @@ En av de funksjonene som vokser fortest
 
 ## Bak kulissene
 
-For maskinen er det akkurat som vanlige funksjonskall. Bruker stacken
+For maskinen er det akkurat som vanlige funksjonskall. Bruker [metode]kallstacken.
+
+## Fibonaccitall
+
