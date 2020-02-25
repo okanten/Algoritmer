@@ -2,12 +2,18 @@
 class Chess:
     
     def __init__(self, board_size: int = 5):
+        """ 
+            Create a new board with a set board size (n * n) and then generate chess board based on n
+        """
+
         self.board_size = board_size
         self.board = self.generate_chess_board()
-        self.free_space = 0
  
     def generate_chess_board(self):
-        # Generate a board, and set each slot to None (unoccupied)
+        """
+            Generate a board, and set each slot to None (unoccupied)
+        """
+
         board = [[None for n in range(self.board_size)] for nn in range(self.board_size)]
         return board
 
@@ -22,18 +28,22 @@ class Chess:
         return self.board[x][y]
 
     def set_piece_on_position(self, position_dictionary, piece):
+        """
+            Method that combines other methods to make sure the new spot is an option
+        """
         x, y = position_dictionary['x'], position_dictionary['y']
-        if not self.square_is_free_or_can_be_taken(position_dictionary, piece.color):
+        if self.square_is_free_or_can_be_taken(position_dictionary, piece.color):
             self.board[x][y] = piece
             return True
         return False
 
-    def square_is_free_or_can_be_taken(self, position_dictionary, piece_color: int):
+    def square_is_free_or_can_be_taken(self, position_dictionary, new_piece_color: int):
         """
-            Checks if square on board is occupied, and if its occupied, then check if the piece is opposite colour
+            Checks if square on board free or if the piece is of the opposite colour
         """
+
         piece = self.get_piece_on_position(position_dictionary)
-        return (piece is None or piece.color != piece_color)
+        return (piece is None or piece.color != new_piece_color)
 
 
 class Piece(Chess):
@@ -41,18 +51,30 @@ class Piece(Chess):
     def __init__(self, legal_move_x: list(), legal_move_y: list(), identifier: int = 99, board_size: int = 8, color: int = 1):
         """
             Create a new piece with a set amount of legal x, y moves (explained further down).
-            An identifier to differentiate a pawn from (for example) a queen. Default value (99) symbolizes blocked
+            An identifier to differentiate a pawn from (for example) a queen. Default value (99) symbolizes blocked square (useful for Knights Tour etc)
             Board size is pretty self explanatory, but it is n * n.
             Color identifies which color the piece is (black = 0, white = 1)
 
             legal_move_x and legal_move_y need to share the same index and key value according to the path allowed.
-            i.e: a Knight can move in an L shape. The arrays need to be like this in some order: 
+            i.e: a Knight can move in an L shape. The arrays need to be like this in some order, with all combinations covered:
+
                 x = [1, 2, -1, -2,  1,  2, -1, -2]
                 y = [2, 1, -2, -1, -2, -1,  2,  1] 
 
-            that way x[0], y[0] make up a legal move, like so:
-            [1, 2]
+            that way:
+
+                move = [ x[0], y[0] ]
+
+            make up a legal move, like so:
+
+                [1, 2]
+
+            The new array (with length of 2) is then added to a new array, named legal_moves. That way we can easily identify if the move is legal by running the condition:
+
+                move in legal_moves
+
         """
+
         self.legal_moves = list()
         for i in range(len(legal_move_x)):
             tmp_list = [legal_move_x[i], legal_move_y[i]]
@@ -83,7 +105,8 @@ class Piece(Chess):
              x, x, x, x, x]
         """
         if self.is_legal_move(x, y):
-            return self.set_piece_on_position({'x': x, 'y': y})
+            move_as_dictionary = {'x': x, 'y': y}
+            return self.set_piece_on_position(move_as_dictionary)
         return False
 
     def set_position(self, x: int = None, y: int = None):
@@ -102,6 +125,7 @@ class Piece(Chess):
         """
             Updates the position for the piece by dictionary (override)        
         """
+
         self.position = position_dict
         
 
