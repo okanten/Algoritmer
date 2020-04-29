@@ -64,10 +64,65 @@ class EnkelGraf:
 
 
 
+"""
 e = EnkelGraf("graf_topsort_2.txt")
 e.read()
 e.print_output()
+"""
 
 class TopSort(EnkelGraf):
 
+    def __init__(self, filename):
+        super().__init__(filename)
+        super().read()
+        # Fyller arrayet med lengde n med False verdier
+        self.visited = [False] * self.n
+        self.visited_nodes = list()
+        self.order = [None] * self.n
+        self.index = self.n - 1
+
+    def dfs(self, start):
+        #self.visited = [False] * self.n
+        self.r_dfs(start)
+
+    def r_dfs(self, x):
+        print(self.data[x])
+        self.visited[x] = True
+        self.visited_nodes.append(self.data[x])
+        for y in range(self.n):
+            if self.neighbors[x][y] and not self.visited[y]:
+                #print(f'{x}, {y} - {self.neighbors[x][y]}')
+                self.r_dfs(y)
+        return self.data[x]
+
+
+    def sort(self):
+        index = self.n - 1
+        order = [None] * self.n
+        for at in range(self.n):
+            if not self.visited[at]:
+                self.dfs(at)
+                for node in self.visited_nodes:
+                    #print(index)
+                    order[index] = node
+                    #self.order[self.index] = node
+                    #print(order) 
+                    #print(t.visited)
+                    #print(self.index)
+                    #print(self.order)
+                    index -= 1
+
+
+
+
     
+t = TopSort("graf_topsort_2.txt")
+t.sort()
+"""
+for i in range(t.get_nodes()):
+    t.dfs(i)
+print(t.visited)
+print(t.order)
+
+
+"""
