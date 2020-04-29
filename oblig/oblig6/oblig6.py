@@ -60,7 +60,6 @@ class EnkelGraf:
                     neighbor = int(neighbor)
                     # Legger til inngrad til naboen 
                     self.preconditions[neighbor] += 1
-
                     # Fjerner noden med inngrad > 0 fra listen
                     try:
                         self.no_precondition.pop(neighbor)
@@ -101,13 +100,14 @@ class TopSort(EnkelGraf):
         self.traversed = defaultdict()
         self.t_queue = queue.LifoQueue()
 
-    def dfs(self, start):
+    def b_dfs(self, start):
         #self.visited = [False] * self.n
         self.r_dfs(start)
 
     def r_dfs(self, x):
         self.visited[x] = True
-        self.visited_nodes.append(self.data[x])
+        #self.visited_nodes.append(self.data[x])
+        self.visited_nodes.append(x)
         #print(self.visited_nodes)
         neighbours = self.neighbors[x]
         if neighbours:
@@ -121,39 +121,8 @@ class TopSort(EnkelGraf):
                 #print(f'{x}, {y} - {self.neighbors[x][y]}')
                 self.r_dfs(y)
         return self.data[x]
-        """
-
+        """ 
     
-    def r_sort(self):
-        node = sorted(self.no_precondition.keys())[-1]
-        print(f'Jobber med node {node}: {self.data[node]}')
-        node_neighbors = self.neighbors[node]
-        for neighbor in node_neighbors:
-            preconditions = self.preconditions[neighbor]
-            preconditions -= 1
-            if preconditions == 0:
-                self.no_precondition[neighbor] = True
-        self.no_precondition.pop(node)
-        self.r_sort()
-
-
-    def r_sort_old(self, no_p_list):
-        
-        traversed = dict()
-        new_list = dict()
-        for node in no_p_list:
-            if node not in self.traversed:
-                print(f'Jobber med node {node}: {self.data[node]}')
-                for node_neighbor in self.neighbors[node]:
-                    pre = self.preconditions[node_neighbor]
-                    pre -= 1
-                    if pre == 0:
-                        self.no_precondition[node_neighbor] = True
-                        new_list[node_neighbor] = True
-        #print(self.no_precondition)
-        self.r_sort(new_list)
-
-
     def r_sort_stack(self, stack):
         node = stack.pop()
         print(f'Jobber med node {node}: {self.data[node]}')
@@ -169,9 +138,21 @@ class TopSort(EnkelGraf):
         if stack:
             self.r_sort_stack(stack)
 
+
+    def dfs(self, x):
+        self.visited[x] = True
+        self.visited_nodes.append(x)
+        # REVERSER STACK FORDI JEG ER LEI
+        stack = []
+        #for i in self.preconditions[at]:
+        for node in self.neighbors[x]:
+            if node in self.no_precondition:
+                stack.append(node)
                 
 
-    
+        self.r_sort_stack(stack)
+
+
     def sort(self):
         stack = list()
         for node in self.no_precondition:
@@ -180,7 +161,7 @@ class TopSort(EnkelGraf):
         count = 0
 
         self.r_sort_stack(stack)
-    
+
 
     def sort_old(self):
         index = self.n - 1
@@ -194,12 +175,15 @@ class TopSort(EnkelGraf):
                         index -= 1
         print(order)
 
-
+    def check_condition(self, t_list):
+        for node in t_list:
+            if self.precondition[node]:
+                stack_work(node)
 
 
     
 t = TopSort("graf_topsort_2.txt")
-t.sort()
+t.sort_old()
 #t.sort()
 #t.dfs(0)
 """
