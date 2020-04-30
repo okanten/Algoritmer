@@ -191,6 +191,8 @@ class TopSort(EnkelGraf):
     
     def r_sort(self, x, visited, stack):
         visited[x] = True
+        if self.data[x] is 'INF110':
+            print("MATCH")
         for i in self.data:
             if not visited[i] and i is not x and self.data[i] not in stack:
                 if self.preconditions[i] < 1:
@@ -198,12 +200,17 @@ class TopSort(EnkelGraf):
                     stack.append(self.data[i])
                 elif self.whichpre[i]:
                     for node in self.whichpre[i]:
-                        if node not in stack:
+                        if node is 0:
+                            print("HAllO")
+                        if self.data[node] in stack:
+                            print(self.whichpre[i])
                             self.preconditions[i] -= 1
                             self.whichpre[i].remove(node)
+                            self.r_sort(node, visited, stack)
+                            #stack.append(self.data[node])
                         else:
                             stack.append(self.data[node])
-                            self.visited[node] = True
+                            visited[node] = True
                             self.r_sort(x, visited, stack)
                     if self.whichpre[i]:
                         x = self.whichpre[i][0]
@@ -215,7 +222,6 @@ class TopSort(EnkelGraf):
 
         for i in range(self.n):
             if not visited[i]:
-                count = 0
                 self.r_sort(i, visited, stack)
         print(*stack, sep=', ')
 
@@ -280,7 +286,7 @@ class TopSort(EnkelGraf):
 
 
     
-t = TopSort("graf_topsort_2.txt")
+t = TopSort("graf_topsort_1.txt")
 #t.sort_old()
 #for i in range(t.n):
 #    t.b_dfs(i)
